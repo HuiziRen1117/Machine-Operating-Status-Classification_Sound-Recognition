@@ -69,10 +69,32 @@ From Figure above, *sig_train* is a three-dimension matrix containing original s
 
 ## 6. Define Response Variable
 
-I look at this problem as a multi-label classification question. I have thought about two options to define the target variable. The first option came to me was that I use 16 labels, because there are 4 pieces of equipment and there could be 0, 1, 2, 3 or 4 pieces of machines working at the same time. By defining it in this way, it will turns to be a one-label multiclass classification problem. I didn't select this method because there are only 7 status in the training set and 9 other status do not have data to be trained.
+I look at this problem as a multi-label classification question. I have thought about two options to define the target variable. The first option came to me was that I use 16 labels to denote all the possible status, because there are 4 pieces of equipment and there could be 0, 1, 2, 3 or 4 pieces of machines working at the same time. By defining it in this way, it will turns to be a one-label multiclass classification problem. I didn't select this method because there are only 7 status in the training set and 9 other status do not have data to be trained.
 
-Thus I define the target variable y as a 4-dimension vector. each element is either 0 or 1. For example if all the four machines are functioning, status would be [1,1,1,1]. By treating this problem as a multi-label classification, I am able to train all the possible status by the information given.
+Instead, I define the target variable y as a 4-dimension vector. each element is either 0 or 1. For example if all the four machines are functioning, status would be [1,1,1,1]. By treating this problem as a multi-label classification, I am able to train all the possible status by the information given.
 
 ![6](https://user-images.githubusercontent.com/38633055/41062496-7f7926cc-69c5-11e8-9deb-f78eda467c1c.PNG)
 
-## 
+## 7. Train Test Split
+
+To test the performance of models and to avoid problems like overfitting, I split the training audio into test set and train set with test set size 0.3. Models will be trained by the training set and prediction accruacy will be calculated based on the out-of-sample "test set".
+
+![7](https://user-images.githubusercontent.com/38633055/41063023-fe99b92a-69c6-11e8-87a2-fd6f90db1079.PNG)
+
+From the figure above we can see that after splitting the original training set as a train and test set, the current size of training data is (50698,100,13); The size of target variable becomes (50698,4); The shape of test set is (21728, 100, 13) and the shape of response variable is (21728, 4)
+
+## Modeling
+
+### Neural Network
+
+I use Keras to build a 1D convolutional Neural Network to train our data. In order to better differentiate the classes, *Sigmoid* transformation is applied at the output layer and each iteration is evaluated with loss function *"binary_crossentropy"*. During many iterations people may want to keep a record of the best model so they can call later, so I added a line of code specifying the modelcheckpoint which only saves the best results. Early stopper is also setted for faster speed.
+
+![8](https://user-images.githubusercontent.com/38633055/41064310-b8e9a4fe-69ca-11e8-966c-565355da82f6.PNG)
+
+![9](https://user-images.githubusercontent.com/38633055/41064525-51f6be0c-69cb-11e8-9bed-b041b4a35bb0.PNG)
+
+Here I define the status for the machine as 1 if the output probability is equal or greater than 0.5, and 0 otherwise. The prediction accuracy for this model is pretty good at 0.973214.
+
+### Random Forest
+
+Besides Neural Nets, I have also tried other machine learning models like random forest. Different from Neural Network which c
