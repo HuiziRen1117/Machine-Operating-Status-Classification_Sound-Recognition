@@ -59,10 +59,20 @@ Because the original audio recorded is continous in time and in order to analyze
 
 ## 5. Build Features By MFCC Decomposition
 
-In this section, I expandAs explained before, using package *Scipy.io.wavefile.read* will return two variables- sample rate and data read from wav file which is a N-by-2 matrix. The signal is later translated to 13 features of sound by MFCC approach. In sound processing , the mel-frequency cepstrum (MFC) is a representation of the short-term power spectrum of a sound, based on a linear cosine transform of a log power spectrum on a nonlinear mel scale of frequency. MFCC are coefficients that collectively make up an MFC. MFCC are commonly used as features in speech recognition systems. 
+In this section, I will build features for our classification problem. As explained before, using package *Scipy.io.wavefile.read* will return two variables- sample rate and data read from wav file which is a N-by-2 matrix. The signal is later translated to 13 features of sound by MFCC approach. In sound processing , the mel-frequency cepstrum (MFC) is a representation of the short-term power spectrum of a sound, based on a linear cosine transform of a log power spectrum on a nonlinear mel scale of frequency. MFCC are coefficients that collectively make up an MFC. MFCC are commonly used as features in speech recognition systems. 
 
 I load python library *python_speech_features* to apply MFCC feature extraction. The key parameters to use this method are *"samplerate*" and "*winstep*". I have two samples of MFCC application to our signal data for different models. Because the sample rate I applied for reading wav file is 44100, I also use this value for MFCC. At this moment you might already notice that with the same sample rate, if I set winstep as 0.01s(sample bin) I would obtain the same row size N for the final MFCC output. Similarly if parameter "winstep" is 0.0001 I would obtain a 100-by-13 matrix for each sample bin, thus by setting "winstep" as 0.0001 the final dataset will contain 72426 sample bins and each bin will be a 100-by-13 matrix. I used first sample for random forest classification and second sample for nueral nets. I will explain more in the modeling section.  
 
 ![5](https://user-images.githubusercontent.com/38633055/41060003-c61603a0-69bd-11e8-8ebb-88b4b6459bf6.PNG)
 
 From Figure above, *sig_train* is a three-dimension matrix containing original signal and *mfcc_train* is also a three-dimention matrix denoting MFCC features.
+
+## 6. Define Response Variable
+
+I look at this problem as a multi-label classification question. I have thought about two options to define the target variable. The first option came to me was that I use 16 labels, because there are 4 pieces of equipment and there could be 0, 1, 2, 3 or 4 pieces of machines working at the same time. By defining it in this way, it will turns to be a one-label multiclass classification problem. I didn't select this method because there are only 7 status in the training set and 9 other status do not have data to be trained.
+
+Thus I define the target variable y as a 4-dimension vector. each element is either 0 or 1. For example if all the four machines are functioning, status would be [1,1,1,1]. By treating this problem as a multi-label classification, I am able to train all the possible status by the information given.
+
+![6](https://user-images.githubusercontent.com/38633055/41062496-7f7926cc-69c5-11e8-9deb-f78eda467c1c.PNG)
+
+## 
