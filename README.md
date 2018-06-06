@@ -3,8 +3,7 @@
 
 The practice is described as follows:
 
-In order to operate a group of equipment more efficiently, it is crucial to identify their operation status. The goal is to identify at each time point what are the machines that
-are functioning by their sound.
+In order to operate a group of equipment more efficiently, it is crucial to identify their operation status. The goal is to identify at each time point what are the machines that are functioning by their sound.
 
 Individual equipment operate status in each recording were annotated by the same person. The annotator was instructed to annotate
 all audible equipment operate status, decide the start time and end time of the operate status as it fit, and choose following event labels:
@@ -87,7 +86,7 @@ From the figure above we can see that after splitting the original training set 
 
 ### Neural Network
 
-I use Keras to build a 1D convolutional Neural Network to train our data. In order to better differentiate the classes, *Sigmoid* transformation is applied at the output layer and each iteration is evaluated with loss function *"binary_crossentropy"*. During many iterations people may want to keep a record of the best model so they can call later, so I added a line of code specifying the modelcheckpoint which only saves the best results. Early stopper is also setted for faster speed.
+I use Keras to build a 1D convolutional Neural Network to train our data. In order to better differentiate the classes, *Sigmoid* transformation is applied at the output layer and each iteration is evaluated with loss function *"binary_crossentropy"*. During many iterations people may want to keep a record of the best model so they can call later, so I added a line of code specifying the modelcheckpoint which only saves the best results. Early stopper is also setted for faster speed. I have also noticed that bigger matrix after MFCC transformation will generate better prediction results by Neural Network
 
 ![8](https://user-images.githubusercontent.com/38633055/41064310-b8e9a4fe-69ca-11e8-966c-565355da82f6.PNG)
 
@@ -97,4 +96,15 @@ Here I define the status for the machine as 1 if the output probability is equal
 
 ### Random Forest
 
-Besides Neural Nets, I have also tried other machine learning models like random forest. Different from Neural Network which c
+Besides Neural Nets, I have also tried another machine learning model-random forest. Different from Neural Network which can apply multi-layer non-linear transformation to make prediction, Random Forest is one of the best ensemble techniques for classification problems and it also applies to multi-label classification. Actually in this dataset random forest has better prediction accruacy than neural network
+
+![2018-06-06 7 33 14](https://user-images.githubusercontent.com/38633055/41070379-83d3df82-69c0-11e8-9882-d513352189d0.png)
+
+![2018-06-06 7 14 18](https://user-images.githubusercontent.com/38633055/41069924-03b5e680-69be-11e8-940f-106d491e03d9.png)
+
+I re-did the MFCC feature extraction for the multi-label random forest as this model only accepts vector-wise features as input. As discussed in section 5, I would be able to obtain
+
+
+
+
+
