@@ -108,7 +108,7 @@ I re-did the MFCC feature extraction for the multi-label random forest as this m
 
 ### Results
 
-The test set is around 45 hours long. with sample bin being 0.01 seconds, the test set would be too large. So I predicted the first 20mins of the test set for my project submission. Results are shown as follows:
+The test set is around 45 hours long. with sample bin being 0.01 seconds, the test set would be too large. So I predicted the first 20mins of the test set for my project submission. I submitted both results from neural network and random forest. 
 
 
 
